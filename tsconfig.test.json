@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "jsx": "react-jsx", // or "preserve" if using Babel
+      "types": ["vitest", "jsdom"], // or "jest" if using Jest
+      // ...other options
+    },
+    "include": ["src", "vite-env.d.ts", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx"]
+  }
+  

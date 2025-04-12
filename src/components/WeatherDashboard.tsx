@@ -3,7 +3,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { fetchCurrentWeather } from "../api/weatherService"
-import { saveHistoricalToLocalStorage, useHistoricalWeather } from "@/lib/utilWeatherData"
+import { generateFakeForecast, saveHistoricalToLocalStorage, useHistoricalWeather } from "@/lib/utilWeatherData"
 import { UIWeatherData } from "@/types/weatherTypes"
 import {  Loader} from "lucide-react"
 import WeatherTile from "./WeatherTile"
@@ -16,8 +16,8 @@ import SelectDayDisplay from "./SelectDayDisplay"
 
 
 export default function WeatherApp() {
-  const [location, setLocation] = useState("New York")
-  const [searchInput, setSearchInput] = useState("New York")
+  const [location, setLocation] = useState("Pretoria")
+  const [searchInput, setSearchInput] = useState("Pretoria")
   const [currentWeather, setCurrentWeather] = useState<UIWeatherData | null>(null)
   const [forecast, setForecast] = useState<UIWeatherData[] | null>([])
   const [history, setHistory] = useState<UIWeatherData[] | null>([])
@@ -34,13 +34,13 @@ export default function WeatherApp() {
         // Fetch current weather
         const currentData = await fetchCurrentWeather(location)
         const currentUIData: UIWeatherData = {
-          date: new Date(currentData.location.localtime).toLocaleDateString(),
-          temp: currentData.current.temperature,
-          condition: currentData.current.weather_descriptions[0] || "Unknown",
-          humidity: currentData.current.humidity,
-          windSpeed: currentData.current.wind_speed,
-          location: `${currentData.location.name}, ${currentData.location.country}`,
-          icon: currentData.current.weather_icons[0],
+          date: new Date(currentData.location?.localtime).toLocaleDateString(),
+          temp: currentData.current?.temperature,
+          condition: currentData.current?.weather_descriptions[0] || "Unknown",
+          humidity: currentData.current?.humidity,
+          windSpeed: currentData.current?.wind_speed,
+          location: `${currentData.location?.name}, ${currentData.location?.country}`,
+          icon: currentData.current?.weather_icons[0],
         }
         
         setCurrentWeather(currentUIData)
@@ -48,14 +48,15 @@ export default function WeatherApp() {
         await saveHistoricalToLocalStorage([currentUIData])
        
 
-        // Fetch forecast data (next 3 days)
-
-        setForecast([])
-
+        
         // // Fetch history data (past 3 days)
         const historyUIData = await useHistoricalWeather()
+        
         setHistory(historyUIData)
 
+        // Generate fake forecast
+        const fakeForecast = generateFakeForecast(history);
+        setForecast(fakeForecast);
       
       } catch (error) {
         console.error("Error fetching weather data:", error)
@@ -66,8 +67,7 @@ export default function WeatherApp() {
 
     fetchWeatherData()
   }, [location])
-
-  
+  console.log(forecast,"juust history")
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -128,6 +128,7 @@ export default function WeatherApp() {
                   <div className="mb-8">
                     <h2 className="text-xl font-semibold mb-4 text-gray-700">3-Day Forecast</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      
                       {forecast?.map((day, index) => (
                         <WeatherTile
                           key={index}

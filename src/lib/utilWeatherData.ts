@@ -28,14 +28,40 @@ type HistoricalWeatherCache = {
       localStorage.removeItem("historicalWeather")
       return null
     }
-  
     return parsed.data
   }
   
 
   export const useHistoricalWeather = async () => {
-    let historicalData = loadHistoricalFromLocalStorage()
+    let historicalData = await loadHistoricalFromLocalStorage()
   
     return historicalData
   }
+  
+
+  export const generateFakeForecast = (history: UIWeatherData[] | null): UIWeatherData[] | null => {
+    if (!history || history.length < 2) return [];
+  
+    const last = history[history.length - 1];
+    const secondLast = history[history.length - 2];
+  
+    const tempDiff = last.temp - secondLast.temp;
+    const trend = Math.sign(tempDiff); // +1, 0, or -1
+  
+    const forecast: UIWeatherData[] = [];
+  
+    for (let i = 1; i <= 3; i++) {
+      const forecastDate = new Date();
+      forecastDate.setDate(forecastDate.getDate() + i);
+  
+      forecast.push({
+        ...last,
+        date: forecastDate.toLocaleDateString(),
+        temp: last.temp + trend * i, // assume steady change
+        condition: last.condition, // reuse condition for simplicity
+      });
+    }
+  
+    return forecast;
+  };
   
