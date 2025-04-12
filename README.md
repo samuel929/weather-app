@@ -1,54 +1,68 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🌤️ Weather App
 
-Currently, two official plugins are available:
+A responsive and interactive weather application that displays current weather, a 3-day forecast, and 3-day historical weather data with smooth animations and local caching.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 1. 📍 Current Weather
+- Displays real-time weather for a user-specified location.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. 📅 3-Day Forecast & History
+- View upcoming 3-day weather predictions.
+- Review past 3-day historical weather data.
+- Presented in a clean grid/list layout.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 3. 🖱️ Interactive Day Selection
+- Click on any weather tile to update the main display.
+- See detailed data (temperature, humidity, wind, etc.) for the selected day.
+
+### ✨ Bonus Features
+
+- ✅ **Smooth Transitions**: Integrated with `framer-motion` for animations.
+- 📱 **Responsive Design**: Works seamlessly across mobile and desktop.
+- 🧠 **Smart Caching**: Utilizes browser local storage.
+- ✅ **Clean Commit History**: Commits are structured and easy to follow for collaboration and code review.
+
+---
+
+## 📦 Tech Stack
+
+- **Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS, `tw-animate-css`, `clsx`, `tailwind-merge`
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Linting**: ESLint + TypeScript
+- **Component Composition**: Radix UI Slot
+
+---
+
+## 🛠️ Installation
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/samuel929/weather-app
+   cd weather-app
+   ```
+
+2. **Install dependencies**
+```
+npm install --legacy-peer-deps
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Start the development server**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
 ```
+npm run dev
+```
+📁 Project Structure
+```
+src/
+│
+├── components/        # Reusable UI components
+├── hooks/             # Custom React hooks
+├── app.tsx             # Main page views
+├── api/               # fetching of data.
+├── types/            # type script types 
+└── utils/             # Helper functions and API logic
