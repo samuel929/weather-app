@@ -1,23 +1,34 @@
 export interface WeatherData {
-    location: {
-      name: string;
-      country: string;
-      localtime: string;
-    };
-    current: {
-      temperature: number;
-      weather_icons: string[];
-      weather_descriptions: string[];
-      wind_speed: number;
-      humidity: number;
-      feelslike: number;
-    };
+  current: {
+    temperature: number
+    weather_icons: string[]
+    weather_descriptions: string[]
+    humidity: number
+    wind_speed: number
   }
-  
-  export interface ForecastOrHistoryData {
-    date: string;
-    temperature: number;
-    weather_icon: string;
-    description: string;
+  location: {
+    name: string
+    country: string
+    localtime: string
   }
-  
+  request: {
+    query: string
+  }
+}
+
+export interface ForecastOrHistoryData {
+  date: string
+  temperature: number
+  weather_icon: string
+  description: string
+}
+
+export type UIWeatherData = {
+  date: string
+  temp: number
+  condition: string
+  humidity: number
+  windSpeed: number
+  location: string
+  icon?: string
+}
