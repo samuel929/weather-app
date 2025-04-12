@@ -95,10 +95,13 @@ export default function WeatherApp() {
 
       
         {/* Navigation */}
+        <div className="flex justify-center ">
         <Navigation
             view={view}
             setView={setView}
           />
+        </div>
+       
 
         {/* Search Bar */}
          <SearchBar
