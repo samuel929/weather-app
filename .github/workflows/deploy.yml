@@ -1,0 +1,63 @@
+name: Build and Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CI: true
+  VERCEL_TOKEN: ${{ secrets.Weather_APP_TOKEN }}
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm install
+      
+      # - name: Run tests
+      #   run: npm test
+      
+      - name: Build project
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: build/
+  
+  deploy:
+    name: Deploy to Vercel
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      
+      - name: Pull Vercel environment info
+        run: vercel pull --yes --environment=production --token=$Weather_APP_TOKEN
+      
+      - name: Deploy to Vercel
+        run: vercel deploy --prod --token=$Weather_APP_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.Weather_APP_TOKEN }}
